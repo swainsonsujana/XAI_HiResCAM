@@ -74,6 +74,13 @@ plt.axis('off')
 plt.imshow(grads_rz[:,:,30], cmap='jet', alpha=0.5)
 plt.show()
 
+#Save CAM
+# Create a NIfTI image object from the 3D saliency map array
+nifti_img = nib.Nifti1Image(grads_rz, affine=np.eye(4))  # Identity matrix as affine
+
+# Save the image as a NIfTI file
+nib.save(nifti_img, '/cam.nii')
+
 #CAM++
 !pip install tf-keras-vis
 from tf_keras_vis.gradcam import GradcamPlusPlus
@@ -94,11 +101,18 @@ cam_map=normalize_map(cam_map)
 cam_map=np.squeeze(cam_map)
 cam_map=resize_map(cam_map)
 
+#Visualize CAM++
 print(cam_map.shape)
 plt.imshow(img_arr[:,:,30], cmap='gray')
 plt.axis('off')
 plt.imshow(cam_map[:,:,30], cmap='jet', alpha=0.5)  
 plt.show()
+#Save CAM++
+# Create a NIfTI image object from the 3D saliency map array
+nifti_img = nib.Nifti1Image(cam_map, affine=np.eye(4))  # Identity matrix as affine
+
+# Save the image as a NIfTI file
+nib.save(nifti_img, '/camplusplus.nii')
 
 
 #Guided Grad_CAM
@@ -145,6 +159,13 @@ plt.imshow(img_arr[:,:,30], cmap='gray')
 plt.axis('off')
 plt.imshow(guided_gradcam1[:,:,30], cmap='jet', alpha=0.5)
 plt.show()
+
+#Save Guided_CAM
+# Create a NIfTI image object from the 3D saliency map array
+nifti_img = nib.Nifti1Image(guided_gradcam1, affine=np.eye(4))  # Identity matrix as affine
+
+# Save the image as a NIfTI file
+nib.save(nifti_img, '/guided_CAM.nii')
 
 #Guided backpropagation-based Grad CAM with high resolution maps (HiResCAM)
 @tf.custom_gradient
@@ -207,4 +228,4 @@ plt.imshow(saliency_map[:,:,35], cmap="jet", alpha=0.5)
 nifti_img = nib.Nifti1Image(saliencymap, affine=np.eye(4))  # Identity matrix as affine
 
 # Save the image as a NIfTI file
-nib.save(nifti_img, '/saliency_map_29155.nii')
+nib.save(nifti_img, '/hirescam.nii')
