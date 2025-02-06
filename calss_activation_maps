@@ -1,0 +1,101 @@
+#Functions to normalize and upsample the 3D gradient maps
+def normalize_map(volume):
+    """Normalize the volume"""
+    min = 0
+    max = 1.5
+    volume[volume < min] = min
+    volume[volume > max] = max
+    volume = (volume - min) / (max - min)
+    volume = volume.astype("float32")
+    #volume = (volume/255.0)*1.5
+    return volume
+def resize_map(img):
+    """Resize across z-axis"""
+    # Set the desired depth
+    desired_depth = 60
+    desired_width = 128
+    desired_height = 128
+    # Get current depth
+    current_depth = img.shape[2]
+    current_width = img.shape[0]
+    current_height = img.shape[1]
+    # Compute depth factor
+    depth = current_depth / desired_depth
+    width = current_width / desired_width
+    height = current_height / desired_height
+    depth_factor = 1 / depth
+    width_factor = 1 / width
+    height_factor = 1 / height
+    # Rotate
+    #img = ndimage.rotate(img, 90, reshape=False)
+    # Resize across z-axis
+    img = ndimage.zoom(img, (width_factor, height_factor, depth_factor), order=1)
+    return img
+#Load the model
+#print("Loaded model from disk")
+loaded_model = keras.models.load_model("..../LeNet_layer6_v1.keras")
+
+#Load an autistic image from dataset
+img=nib.load(img_path)
+img_arr=img.get_fdata()
+img_arr=resize_volume(img_arr)
+img_arr=normalize(img_arr)
+
+#Check the prediction
+img_arr1 = img_arr.reshape(1, 128, 128, 60, 1)
+#print(background.shape)
+pred=loaded_model.predict(img_arr1)
+print(pred)
+#display the image
+plt.imshow(img_arr[:,:,30], cmap='gray')
+plt.axis('off')
+
+
+#CAM 
+with tf.GradientTape() as tape:
+    img_arr1_tensor = tf.convert_to_tensor(img_arr1, dtype=tf.float32)  
+    tape.watch(img_arr1_tensor)
+    result = loaded_model(img_arr1_tensor)
+    target_class_index = 0  # Example: Calculate gradient for class 0
+    target_class_output = result[0, target_class_index]  # Output for the target class
+    grads = tape.gradient(target_class_output, img_arr1_tensor)  # Calculate gradients
+print(grads.shape)
+grads = np.squeeze(grads)
+print(grads.shape)
+grads= tf.nn.relu(grads)
+grads=grads.numpy()
+print(grads.shape)
+grads=normalize_map(grads)
+grads_rz=resize_map(grads)
+
+#Visualize
+plt.imshow(img_arr[:,:,30], cmap='gray')
+plt.axis('off')
+plt.imshow(grads_rz[:,:,30], cmap='jet', alpha=0.5)
+plt.show()
+
+#CAM++
+!pip install tf-keras-vis
+from tf_keras_vis.gradcam import GradcamPlusPlus
+from tf_keras_vis.utils.scores import CategoricalScore
+
+predicted_class = np.argmax(pred[0])
+# Create a GradCAM++ object
+gradcam_plus_plus = GradcamPlusPlus(loaded_model, clone=True)
+# Define the score function to compute gradients for the predicted class
+score = CategoricalScore(predicted_class)
+# Compute GradCAM++ heatmap
+cam_map = gradcam_plus_plus(score, img_arr1)
+
+#normalize and upsample the CAM++ 
+cam_map=tf.nn.relu(cam_map)
+cam_map=cam_map.numpy()
+cam_map=normalize_map(cam_map)
+cam_map=np.squeeze(cam_map)
+cam_map=resize_map(cam_map)
+
+print(cam_map.shape)
+plt.imshow(img_arr[:,:,30], cmap='gray')
+plt.axis('off')
+plt.imshow(cam_map[:,:,30], cmap='jet', alpha=0.5)  
+plt.show()
