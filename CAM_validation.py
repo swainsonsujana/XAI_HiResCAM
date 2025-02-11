@@ -13,7 +13,7 @@ def calculate_faithfulness(model, image, saliency_map, occlusion_percentage=0.1)
     Calculate faithfulness by occluding regions in the image based on the saliency map.
 
     :param model: The trained model (with a predict() function)
-    :param image: Original input image (shape: [128, 128, 50] for 3D)
+    :param image: Original input image (shape: [128, 128, 60] for 3D)
     :param saliency_map: Saliency map (same shape as the image)
     :param occlusion_percentage: Percentage of most important pixels to occlude.
 
@@ -99,7 +99,7 @@ def progressive_masking(input_image, saliency_map, model, steps=100):
 # Function to compute iAUC
 def compute_iAUC(predictions, steps):
     """
-    Compute the integral area under the curve (iAUC).
+    Compute the integrated area under the curve (iAUC).
 
     Args:
         predictions (numpy array): Model predictions at each masking step.
