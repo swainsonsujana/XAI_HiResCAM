@@ -1,6 +1,6 @@
 This study can be executed by following these steps:
 
-1. Download the dataset from kaggle link provided in readme.md
+1. Download the dataset from the kaggle link provided in readme.md
 2. Unzip the files and make it ready
 3. Build the CNN model by executing CNN_Model.py. Make sure you set the path names correctly wherever required.
 4. To generate the class activation maps for a positive prediction, execute class_activation_maps.py
