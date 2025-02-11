@@ -7,4 +7,4 @@ This study can be executed by following these steps:
 5. Here load the CNN model and choose an image(autistic) to be explained using XAI 
 6. Generate Gradient map, CAM++, guided_CAM and HiResCAM and save them in 3D file format(.nii)
 7. To validate the genrated CAM maps, execute the CAM_validation.py file(Set the paths correctly for the CAM maps)
-8. Sample output images are available at /samples folder
+8. Sample output images are available at /samples folder 
