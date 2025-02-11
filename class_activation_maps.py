@@ -31,8 +31,8 @@ def resize_map(img):
     # Resize across z-axis
     img = ndimage.zoom(img, (width_factor, height_factor, depth_factor), order=1)
     return img
-#Load the model
-#print("Loaded model from disk")
+# Load the model
+# print("Loaded model from disk")
 loaded_model = keras.models.load_model("..../LeNet_layer6_v1.keras")
 
 #Load an autistic image from dataset
@@ -51,7 +51,7 @@ plt.imshow(img_arr[:,:,30], cmap='gray')
 plt.axis('off')
 
 
-#CAM 
+# Gradient map
 with tf.GradientTape() as tape:
     img_arr1_tensor = tf.convert_to_tensor(img_arr1, dtype=tf.float32)  
     tape.watch(img_arr1_tensor)
@@ -68,20 +68,20 @@ print(grads.shape)
 grads=normalize_map(grads)
 grads_rz=resize_map(grads)
 
-#Visualize
+# Visualize
 plt.imshow(img_arr[:,:,30], cmap='gray')
 plt.axis('off')
 plt.imshow(grads_rz[:,:,30], cmap='jet', alpha=0.5)
 plt.show()
 
-#Save CAM
+# Save Gradient map
 # Create a NIfTI image object from the 3D saliency map array
 nifti_img = nib.Nifti1Image(grads_rz, affine=np.eye(4))  # Identity matrix as affine
 
 # Save the image as a NIfTI file
 nib.save(nifti_img, '/cam.nii')
 
-#CAM++
+# CAM++
 !pip install tf-keras-vis
 from tf_keras_vis.gradcam import GradcamPlusPlus
 from tf_keras_vis.utils.scores import CategoricalScore
@@ -94,14 +94,14 @@ score = CategoricalScore(predicted_class)
 # Compute GradCAM++ heatmap
 cam_map = gradcam_plus_plus(score, img_arr1)
 
-#normalize and upsample the CAM++ 
+# normalize and upsample the CAM++ 
 cam_map=tf.nn.relu(cam_map)
 cam_map=cam_map.numpy()
 cam_map=normalize_map(cam_map)
 cam_map=np.squeeze(cam_map)
 cam_map=resize_map(cam_map)
 
-#Visualize CAM++
+# Visualize CAM++
 print(cam_map.shape)
 plt.imshow(img_arr[:,:,30], cmap='gray')
 plt.axis('off')
@@ -115,7 +115,7 @@ nifti_img = nib.Nifti1Image(cam_map, affine=np.eye(4))  # Identity matrix as aff
 nib.save(nifti_img, '/camplusplus.nii')
 
 
-#Guided Grad_CAM
+# Guided Grad_CAM
 with tf.GradientTape() as tape:
     last_conv_layer_output = last_conv_layer_model(img_arr[np.newaxis, ...])
     tape.watch(last_conv_layer_output)
