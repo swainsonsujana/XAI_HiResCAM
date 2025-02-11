@@ -5,8 +5,11 @@ This is the repository of the paper "High-Resolution XAI Explanations for Deep L
 
 # To download data 
 !pip install kaggle
+
 !mkdir ~/.kaggle
+
 !cp kaggle.json ~/.kaggle/
+
 !chmod 600 ~/.kaggle/kaggle.json
 
 # place kaggle.json file in the current directory
