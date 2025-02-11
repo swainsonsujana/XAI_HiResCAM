@@ -209,19 +209,21 @@ saliency_map = np.clip(saliency_map, 0, np.max(saliency_map))
 print(saliency_map.shape)
 
 #Aligning the saliency map
-saliency_map -= saliency_map.mean()
-saliency_map /= saliency_map.std() + tf.keras.backend.epsilon()
-saliency_map *= 0.25
-saliency_map += 0.5
-saliency_map = np.clip(saliency_map, 0, 1)
-saliency_map *= (2 ** 8) - 1
-saliency_map = saliency_map.astype(np.float32)
-saliency_map = np.clip(saliency_map, 0, np.max(saliency_map))
+saliency_map -= saliency_map.mean() # subtracts the mean of the saliency map, to center its value around 0( To remove global intensity bias)
+saliency_map /= saliency_map.std() + tf.keras.backend.epsilon() # to avoid division by 0 and normalizes the distribution of saliency values 
 
-#Visulaize the HiResCAM at slice 35
-plt.imshow(img_arr[:,:,35], cmap="gray")
+# scaling values to the range[0.25, 0.5] to avoid extreme dark or bright values when visualizing
+saliency_map *= 0.25 
+saliency_map += 0.5
+saliency_map = np.clip(saliency_map, 0, 1) # ensures no value goes below 0 or above 1
+saliency_map *= (2 ** 8) - 1 # converts the normalized map to the 8-bit gray scale image range
+saliency_map = saliency_map.astype(np.float32) # intensity scaling
+saliency_map = np.clip(saliency_map, 0, np.max(saliency_map)) # clipping to maximum value
+
+#Visulaize the HiResCAM at slice 30
+plt.imshow(img_arr[:,:,30], cmap="gray")
 plt.axis('off')
-plt.imshow(saliency_map[:,:,35], cmap="jet", alpha=0.5)
+plt.imshow(saliency_map[:,:,30], cmap="jet", alpha=0.5)
 
 #Save HiResCAM
 # Create a NIfTI image object from the 3D saliency map array
