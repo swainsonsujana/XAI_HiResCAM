@@ -1,5 +1,5 @@
 #Load CAM++, Guided_CAM, or HiResCAM
-map_path = "cam++.nii"  
+map_path = "cam++.nii/guided_cAM.nii/hirescam.nii"  
 saliency_map = nib.load(map_path).get_fdata()
 #Load the model
 loaded_model = keras.models.load_model("../LeNet_layer6_v1.keras")
