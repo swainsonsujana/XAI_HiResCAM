@@ -13,4 +13,28 @@ The 3D-sMRI images were resized and normalized before it actually fed into the m
 # Explaining model's prediction
 The post-hoc explanation was performed by taking a sample autistic image from the dataset. The trained model was loaded and the original image prediction was found.
 
-![image](https://github.com/user-attachments/assets/5c3ef390-a0aa-44a5-818c-c3f80ec0eea1)
+![image](https://github.com/user-attachments/assets/5c3ef390-a0aa-44a5-818c-c3f80ec0eea1) Pid:30245
+
+# Gradient map
+At first the gradient map for the input image was generated
+![image](https://github.com/user-attachments/assets/da3d8b07-0dc0-4417-950c-b3b8ccf1ad8a)
+
+# CAM++
+Then the CAM++ was generated for the same image
+
+![image](https://github.com/user-attachments/assets/270a5ccc-2c94-4b8b-b111-785e7a5c1962)
+
+# guided CAM
+Next visual explanation guided CAM was generated 
+
+![image](https://github.com/user-attachments/assets/788264b4-a439-47cb-ac6b-545efd3e2a09)
+
+# HiResCAM
+The hiresolution class activation map(HiResCAM) was generated from gradient map and from guided CAM by performing element wise multiplication.
+
+![image](https://github.com/user-attachments/assets/7c2d8a60-7f4c-42cb-9800-fe083cb6fc4e)
+
+
+
+
+
