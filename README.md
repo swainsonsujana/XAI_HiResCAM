@@ -8,6 +8,4 @@ The aim of the study is to evaluate the explainable AI methods CAM++, Guided_CAM
 #Model Building
 The 3D-sMRI images were resized and normalized before it actually fed into the model. A modified LeNet based model was built with 3 convoltuional layers. The train split ratio was set as 73:27. The model has been trained for 100 epochs with the early stopping mode enabled(patience=15). The AUC value of the model on the validation data is 0.8456. 
 
-
-![image](https://github.com/user-attachments/assets/afa4fd8d-dc46-481e-abab-5ec0164684ee)
-
+![AUC](https://github.com/user-attachments/assets/322491d1-a200-4a72-bb78-4eb555f227bc)
