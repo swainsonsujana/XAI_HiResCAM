@@ -9,13 +9,11 @@ from scipy import ndimage
 import os
 import zipfile
 import numpy as np
-import tensorflow as tf  # for data preprocessing
 import keras
 from keras import layers
 from keras import regularizers
 from scipy import ndimage
 from tensorflow.python.keras import regularizers
-
 from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 
 def normalize_map(volume):
