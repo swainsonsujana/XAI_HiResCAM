@@ -6,4 +6,5 @@ D Swainson Sujana. (2024). Resampled [Data set]. Kaggle. https://doi.org/10.3474
 #The source code can be downloaded from 
 https://swainsonsujana.github.io/XAI_HiResCAM
 
+!pip install git+https://swainsonsujana.github.io/XAI_HiResCAM
 
