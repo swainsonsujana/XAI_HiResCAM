@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/41d595e5-3f42-4f6a-adf1-1a383f8a9ebb)# XAI_HiResCAM
+# XAI_HiResCAM
 This is the repository of the paper "High-Resolution XAI Explanations for Deep Learning-Based Autism Diagnosis Using structural MRI Images"
 # Data available at 
 D Swainson Sujana. (2024). Resampled [Data set]. Kaggle. https://doi.org/10.34740/KAGGLE/DSV/9108251
@@ -13,10 +13,13 @@ The 3D-sMRI images were resized and normalized before it actually fed into the m
 # Explaining model's prediction
 The post-hoc explanation was performed by taking a sample autistic image from the dataset. The trained model was loaded and the original image prediction was found.
 
-![image](https://github.com/user-attachments/assets/5c3ef390-a0aa-44a5-818c-c3f80ec0eea1) Pid:30245
+![image](https://github.com/user-attachments/assets/5c3ef390-a0aa-44a5-818c-c3f80ec0eea1) 
+
+Pid:30245
 
 # Gradient map
 At first the gradient map for the input image was generated
+
 ![image](https://github.com/user-attachments/assets/da3d8b07-0dc0-4417-950c-b3b8ccf1ad8a)
 
 # CAM++
@@ -34,9 +37,10 @@ The hiresolution class activation map(HiResCAM) was generated from gradient map 
 
 ![image](https://github.com/user-attachments/assets/7c2d8a60-7f4c-42cb-9800-fe083cb6fc4e)
 
-# Faithfulness score
+# Finding Faithfulness score(Occlusion method)
 The generated visual explanations were tested for its faithfulness by finding the faithfulness score. The higher faithfulness score indicates the explanations are reliable and trustworhty. This is accomplishd through the method called image occlusion.
 # Occlusion based on CAM++
+
 ![image](https://github.com/user-attachments/assets/11fa2a57-9888-40fa-aa16-59e8be32e3bc)
 
 # Occlusion based on Guided_CAM
