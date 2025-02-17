@@ -1,7 +1,10 @@
 numpy
 mathplotlib
-tensorflow
-keras
+tensorflow>=2.16.1
+keras>=3.3.3
 scipy
-nibabel
+nibabel>=5.2.1
 scikit-learn
+sklearn
+cv2
+tf_keras_vis>=0.8.7
