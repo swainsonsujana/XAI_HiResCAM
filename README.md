@@ -48,6 +48,24 @@ The generated visual explanations were tested for its faithfulness by finding th
 ![image](https://github.com/user-attachments/assets/e9aa6a93-96d5-426b-96cf-9b78a85eacf9)
 
 
+# Progressive masking
+To measure the iAUC value of the generated explanations, we performed progressive masking of the input image based on the peak values detected in the explanations.
+For a good explanation the iAUC value must be small(less than 0.5)
+# iAUC on CAM++
+
+![image](https://github.com/user-attachments/assets/81e3504e-7a85-4ae1-9a3b-c196e6e66940)
+
+# iAUC on guided_CAM
+
+![image](https://github.com/user-attachments/assets/0504ebf3-2ee2-4684-b2e2-35531d8f5231)
+
+# iAUC on HiResCAM
+
+![image](https://github.com/user-attachments/assets/6ae75738-6532-4433-95fa-101eea6a540e)
+
+
+
+
 
 
 
