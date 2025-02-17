@@ -36,7 +36,7 @@ def resize_map(img):
 loaded_model = keras.models.load_model("..../LeNet_layer6_v1.keras")
 
 #Load an autistic image from dataset
-img=nib.load(img_path)
+img=nib.load("./image.nii.gz")
 img_arr=img.get_fdata()
 img_arr=resize_volume(img_arr)
 img_arr=normalize(img_arr)
