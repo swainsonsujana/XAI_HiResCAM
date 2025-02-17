@@ -51,15 +51,15 @@ def resize_map(img):
 
 #fetch autistic images from database
 autisticpaths= [
-    os.path.join(os.getcwd(), "/kaggle/input/resampled/resampled/resampled-aut", x)
-    for x in os.listdir("/kaggle/input/resampled/resampled/resampled-aut")
+    os.path.join(os.getcwd(), "./resampled/resampled-aut", x)
+    for x in os.listdir("./resampled/resampled-aut")
     ]
 print("Number of scans: " + str(len(autisticpaths)))
 
 #fetch control images from database
 nonautisticpaths = [
-    os.path.join(os.getcwd(), "/kaggle/input/resampled/resampled/resampled-nonaut", x)
-    for x in os.listdir("/kaggle/input/resampled/resampled/resampled-nonaut")
+    os.path.join(os.getcwd(), "./resampled/resampled-nonaut", x)
+    for x in os.listdir("./resampled-nonaut")
 ]
 print("Number of scans: " + str(len(nonautisticpaths)))
 
@@ -115,7 +115,6 @@ validation_dataset = (
 def get_model(width=128, height=128, depth=60):
     """Build a modified 3D Lenet"""
     inputs = keras.Input((width, height, depth, 1))
-    #x = tf.keras.layers.Lambda(lambda image: tf.image.resize(image, target_size))(inputs)
     x = layers.Conv3D(filters=6, kernel_size=5, activation="relu", strides=(1,1,1), padding='same', kernel_regularizer=regularizers.l2(0.001), kernel_initializer='he_normal')(inputs)
     #x = layers.BatchNormalization()(x)
     x = layers.AveragePooling3D(pool_size=2,strides=(2,2,2))(x)
@@ -154,7 +153,7 @@ model.compile(
 
 # Define callbacks.
 early_stopping_cb = keras.callbacks.EarlyStopping(monitor="val_acc", patience=15)
-csv_logger = CSVLogger("/kaggle/working/LeNet_layer6_v1.csv", append=True)
+csv_logger = CSVLogger("./LeNet_layer6_v1.csv", append=True)
 
 #Train the model, doing validation at the end of each epoch
 epochs = 100
@@ -166,7 +165,7 @@ history=model.fit(
     verbose=1,
    callbacks=[csv_logger, early_stopping_cb]
 )
-model.save("/kaggle/working/LeNet_layer6_v1.keras")
+model.save("./LeNet_layer6_v1.keras")
 
 #visualizing model's performance
 import matplotlib.pyplot as plt
