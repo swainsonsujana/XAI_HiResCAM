@@ -34,6 +34,22 @@ The hiresolution class activation map(HiResCAM) was generated from gradient map 
 
 ![image](https://github.com/user-attachments/assets/7c2d8a60-7f4c-42cb-9800-fe083cb6fc4e)
 
+# Faithfulness score
+The generated visual explanations were tested for its faithfulness by finding the faithfulness score. The higher faithfulness score indicates the explanations are reliable and trustworhty. This is accomplishd through the method called image occlusion.
+# occlusion based on CAM++
+![image](https://github.com/user-attachments/assets/11fa2a57-9888-40fa-aa16-59e8be32e3bc)
+
+# occlusion based on Guided_CAM
+
+![image](https://github.com/user-attachments/assets/3a5e9765-0b1b-4473-9435-a945e8fd0974)
+
+# occlusion based on HiResCAM
+
+![image](https://github.com/user-attachments/assets/e9aa6a93-96d5-426b-96cf-9b78a85eacf9)
+
+
+
+
 
 
 
