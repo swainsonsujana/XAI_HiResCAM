@@ -1,1 +1,7 @@
-
+numpy
+mathplotlib
+tensorflow
+keras
+scipy
+nibabel
+scikit-learn
