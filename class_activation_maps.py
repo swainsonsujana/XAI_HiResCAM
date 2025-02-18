@@ -68,10 +68,27 @@ print(grads.shape)
 grads=normalize_map(grads)
 grads_rz=resize_map(grads)
 
-# Visualize
+# Visualize single slice
 plt.imshow(img_arr[:,:,30], cmap='gray')
 plt.axis('off')
 plt.imshow(grads_rz[:,:,30], cmap='jet', alpha=0.5)
+plt.show()
+
+#grid visualization
+import matplotlib.pyplot as plt
+
+fig, axes = plt.subplots(2, 2, figsize=(8, 8))  # 2x2 grid
+
+slices = [25, 30, 35, 40]
+titles = ["Slice 25", "Slice 30", "Slice 35", "Slice 40"]
+
+for i, ax in enumerate(axes.flat):  # Flatten 2D axes array
+    ax.imshow(img_arr[:, :, slices[i]], cmap='gray')
+    ax.imshow(grads_rz[:, :, slices[i]], cmap='jet', alpha=0.5)  # Overlay heatmap
+    ax.axis('off')
+    ax.set_title(titles[i])
+
+plt.tight_layout() 
 plt.show()
 
 # Save Gradient map
@@ -80,6 +97,53 @@ nifti_img = nib.Nifti1Image(grads_rz, affine=np.eye(4))  # Identity matrix as af
 
 # Save the image as a NIfTI file
 nib.save(nifti_img, '/cam.nii')
+
+# CAM
+last_conv_layer = loaded_model.get_layer("conv3d_2")
+last_conv_layer_model = tf.keras.Model(loaded_model.inputs, last_conv_layer.output)
+
+classifier_input = tf.keras.Input(shape=last_conv_layer.output.shape[1:])
+x = classifier_input
+for layer_name in ['average_pooling3d_2', 'dense', 'flatten', 'dense_1', 'dense_2']:
+    x = loaded_model.get_layer(layer_name)(x)
+classifier_model = tf.keras.Model(classifier_input, x)
+
+with tf.GradientTape() as tape:
+    inputs = img_arr[np.newaxis, ...]
+    last_conv_layer_output = last_conv_layer_model(inputs)
+    tape.watch(last_conv_layer_output)
+    preds = classifier_model(last_conv_layer_output)
+    top_pred_index = tf.argmax(preds[0])
+    print(top_pred_index)
+    top_class_channel = preds[:, top_pred_index]
+
+grads = tape.gradient(top_class_channel, last_conv_layer_output)
+pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2))
+
+
+last_conv_layer_output = last_conv_layer_output.numpy()[0]
+pooled_grads = pooled_grads.numpy()
+print(pooled_grads.shape)
+print(last_conv_layer_output.shape)
+for i in range(pooled_grads.shape[0]):
+    last_conv_layer_output[:, :, i] *= pooled_grads[i]
+
+import cv2
+# Average over all the filters to get a single 2D array
+gradcam = np.mean(last_conv_layer_output, axis=-1)
+gradcam=tf.nn.relu(gradcam)
+
+grads=gradcam.numpy()
+print(grads.shape)
+grads=normalize_map(grads)
+gradcam=resize_map(grads)
+
+#CAM visualization
+plt.imshow(img_arr[:,:,30], cmap='gray')
+plt.imshow(gradcam[:,:,30], cmap='jet', alpha=0.5)
+#plt.savefig('/content/drive/MyDrive/LeNet_Grad_CAM_A30187.png')
+plt.show()
+
 
 # CAM++
 !pip install tf-keras-vis
@@ -101,12 +165,29 @@ cam_map=normalize_map(cam_map)
 cam_map=np.squeeze(cam_map)
 cam_map=resize_map(cam_map)
 
-# Visualize CAM++
+# Visualize CAM++ - single slice
 print(cam_map.shape)
 plt.imshow(img_arr[:,:,30], cmap='gray')
 plt.axis('off')
 plt.imshow(cam_map[:,:,30], cmap='jet', alpha=0.5)  
 plt.show()
+
+# Grid visualization
+fig, axes = plt.subplots(2, 2, figsize=(8, 8))  # 2x2 grid
+
+slices = [25, 30, 35, 40]
+titles = ["Slice 25", "Slice 30", "Slice 35", "Slice 40"]
+
+for i, ax in enumerate(axes.flat):  # Flatten 2D axes array
+    ax.imshow(img_arr[:, :, slices[i]], cmap='gray')
+    ax.imshow(cam_map[:, :, slices[i]], cmap='jet', alpha=0.5)  # Overlay heatmap
+    ax.axis('off')
+    ax.set_title(titles[i])
+
+plt.tight_layout() 
+plt.show()
+
+
 #Save CAM++
 # Create a NIfTI image object from the 3D saliency map array
 nifti_img = nib.Nifti1Image(cam_map, affine=np.eye(4))  # Identity matrix as affine
@@ -158,6 +239,22 @@ guided_gradcam1=guided_gradcam1.astype(np.float32)
 plt.imshow(img_arr[:,:,30], cmap='gray')
 plt.axis('off')
 plt.imshow(guided_gradcam1[:,:,30], cmap='jet', alpha=0.5)
+plt.show()
+
+#Grid visualization
+
+fig, axes = plt.subplots(2, 2, figsize=(8, 8))  # 2x2 grid
+
+slices = [25, 30, 35, 40]
+titles = ["Slice 25", "Slice 30", "Slice 35", "Slice 40"]
+
+for i, ax in enumerate(axes.flat):  # Flatten 2D axes array
+    ax.imshow(img_arr[:, :, slices[i]], cmap='gray')
+    ax.imshow(guided_gradcam1[:, :, slices[i]], cmap='jet', alpha=0.5)  # Overlay heatmap
+    ax.axis('off')
+    ax.set_title(titles[i])
+
+plt.tight_layout()  
 plt.show()
 
 #Save Guided_CAM
@@ -224,6 +321,21 @@ saliency_map = np.clip(saliency_map, 0, np.max(saliency_map)) # clipping to maxi
 plt.imshow(img_arr[:,:,30], cmap="gray")
 plt.axis('off')
 plt.imshow(saliency_map[:,:,30], cmap="jet", alpha=0.5)
+
+# Grid visualization
+fig, axes = plt.subplots(2, 2, figsize=(8, 8))  # 2x2 grid
+
+slices = [25, 30, 35, 40]
+titles = ["Slice 25", "Slice 30", "Slice 35", "Slice 40"]
+
+for i, ax in enumerate(axes.flat):  # Flatten 2D axes array
+    ax.imshow(img_arr[:, :, slices[i]], cmap='gray')
+    ax.imshow(saliency_map[:, :, slices[i]], cmap='jet', alpha=0.5)  # Overlay heatmap
+    ax.axis('off')
+    ax.set_title(titles[i])
+
+plt.tight_layout() 
+plt.show()
 
 #Save HiResCAM
 # Create a NIfTI image object from the 3D saliency map array
