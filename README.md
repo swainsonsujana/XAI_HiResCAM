@@ -6,42 +6,56 @@ D Swainson Sujana. (2024). Resampled [Data set]. Kaggle. https://doi.org/10.3474
 The aim of the study is to interpret the predictions of an Autism diagnosis model. This study employed the explainable AI methods CAM++, Guided_CAM and HiResCAM(High resolution Class Activation Map) to interpret the model's predictions. At first a basic CNN model was built to diagnose autism from structural MRI images. The model's decision on positive(Autistic) predictions are explained through the XAI methods. To check the correctness and to ensure the trustworthiness of the generated XAI explanations, this study employed two techniques: 1. Occluding the original image 2. Progressive masking. Metrics such as faithfulness score and integrated Area Under Curve(iAUC) were used to evaluate the trustworthiness of the generated explanations. Faithful explanations are expected to have higher Faithfulness score and the lower iAUC value. In this study we found HiResCAM achieved the highest faithfulness score and lowest iAUC value and proved to be the reliable explantion for the autism diagnosis model. 
 
 # Model Building
-The 3D-sMRI images were resized and normalized before it actually fed into the model. A modified LeNet based model was built with 3 convoltuional layers. The train split ratio was set as 73:27. The model has been trained for 100 epochs with the early stopping mode enabled(patience=15). The AUC value of the model on the validation data is 0.8456. 
+The 3D-sMRI images were resized and normalized before it actually fed into the model. A modified LeNet based model was built with 3 convoltuional layers. The train split ratio was set as 73:27. The model has been trained for 100 epochs with the early stopping mode enabled(patience=15). The AUC value of the model on the validation data is 0.8434. 
 
 ![AUC](https://github.com/user-attachments/assets/322491d1-a200-4a72-bb78-4eb555f227bc)
 
 # Explaining model's prediction
 The post-hoc explanation was performed by taking a sample autistic image from the dataset. The trained model was loaded and the original image prediction was found.
 
-![image](https://github.com/user-attachments/assets/5c3ef390-a0aa-44a5-818c-c3f80ec0eea1) 
+![image](https://github.com/user-attachments/assets/26156e52-1133-42d7-a14b-c8f845367121)  ![image](https://github.com/user-attachments/assets/b112e2fb-b27b-4134-9c92-afcdc36b633b)
 
-Pid:30245
+
+
+ Pid:30245
+
 
 # Gradient map
 At first the gradient map for the input image was generated
 
-![image](https://github.com/user-attachments/assets/da3d8b07-0dc0-4417-950c-b3b8ccf1ad8a)
+![image](https://github.com/user-attachments/assets/a7dd0b19-2e3e-4852-8dd8-4784a06ab13a)
+
+
 
 # CAM++
 Then the CAM++ was generated for the same image
 
-![image](https://github.com/user-attachments/assets/270a5ccc-2c94-4b8b-b111-785e7a5c1962)
+![image](https://github.com/user-attachments/assets/555e8633-db30-4e66-9309-9ece892dcacc)
+
+
 
 # Guided CAM
 Next visual explanation guided CAM was generated 
 
-![image](https://github.com/user-attachments/assets/788264b4-a439-47cb-ac6b-545efd3e2a09)
+
+![image](https://github.com/user-attachments/assets/c62ea691-0e0c-46d9-967d-3b931480c61c)
+
+
 
 # HiResCAM
 The hiresolution class activation map(HiResCAM) was generated from gradient map and from guided CAM by performing element wise multiplication.
 
-![image](https://github.com/user-attachments/assets/7c2d8a60-7f4c-42cb-9800-fe083cb6fc4e)
+
+![image](https://github.com/user-attachments/assets/3b544ec0-b732-4e82-8fe8-f51490ed2bc6)
+
+
 
 # Finding Faithfulness score(Occlusion method)
 The generated visual explanations were tested for its faithfulness by finding the faithfulness score. The higher faithfulness score indicates the explanations are reliable and trustworhty. This is accomplishd through the method called image occlusion.
 # Occlusion based on CAM++
 
-![image](https://github.com/user-attachments/assets/11fa2a57-9888-40fa-aa16-59e8be32e3bc)
+![image](https://github.com/user-attachments/assets/0d924a4b-d9c1-4958-860e-af41105a9201)
+
 
 # Occlusion based on Guided_CAM
 
