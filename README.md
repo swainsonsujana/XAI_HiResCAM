@@ -3,10 +3,9 @@ This is the repository of the paper "High-Resolution XAI Explanations for Deep L
 # Data available at 
 D Swainson Sujana. (2024). Resampled [Data set]. Kaggle. https://doi.org/10.34740/KAGGLE/DSV/9108251
 
-The aim of the study is to interpret the positive predictions of an Autism diagnosis model. This study employed the explainable AI methods CAM++, Guided_CAM and HiResCAM(High resolution Class Activation Map) to interpret the model's predictions. At first a basic CNN model was built to diagnose autism from structural MRI images. The model's decision on positive(Autistic) predictions are explained through the XAI methods. To check the correctness and to ensure the trustworthiness of the generated XAI explanations, this study employed two techniques: 1. Occluding the original image 2. Progressive masking. Metrics such as faithfulness score and integrated Area Under Curve(iAUC) were used to evaluate the trustworthiness of the generated explanations. Faithful explanations are expected to have higher Faithfulness score and the lower iAUC value. In this study we found HiResCAM achieved the highest faithfulness score and lowest iAUC value and proved to be the reliable explantion for the autism diagnosis model. 
-
+The aim of the study is to interpret the positive predictions of an Autism diagnosis model. This study employed the explainable AI methods CAM++, Guided_CAM, and HiResCAM (High-resolution Class Activation Map) to interpret the model's predictions. At first, a basic CNN model was built to diagnose autism from structural MRI images. The model's decision on positive (Autistic) predictions is explained through the XAI methods. To check the correctness and to ensure the trustworthiness of the generated XAI explanations, this study employed two techniques: 1. Occluding the original image and 2. Progressive masking. Metrics such as faithfulness score and integrated Area Under Curve(iAUC) were used to evaluate the trustworthiness of the generated explanations. Faithful explanations are expected to have a higher Faithfulness score and a lower AUC value. In this study, we found that HiResCAM achieved the highest faithfulness score and lowest iAUC value, which proved to be a reliable explanation for the autism diagnosis model.
 # Model Building
-The 3D-sMRI images were resized and normalized before it actually fed into the model. A modified LeNet based model was built with 3 convoltuional layers. The train split ratio was set as 73:27. The model has been trained for 100 epochs with the early stopping mode enabled(patience=15). The AUC value of the model on the validation data is 0.8434. 
+The 3D-sMRI images were resized and normalized before they actually fed into the model. A modified LeNet-based model was built with three convolutional layers. The train split ratio was set as 73:27. The model has been trained for 100 epochs with the early stopping mode enabled(patience=15). The AUC value of the model on the validation data is 0.8434.
 
 ![AUC](https://github.com/user-attachments/assets/322491d1-a200-4a72-bb78-4eb555f227bc)
 
@@ -35,7 +34,7 @@ Then the CAM++ was generated for the same image
 
 
 # Guided CAM
-Next visual explanation guided CAM was generated 
+Next guided_CAM was generated 
 
 
 ![image](https://github.com/user-attachments/assets/c62ea691-0e0c-46d9-967d-3b931480c61c)
@@ -43,7 +42,7 @@ Next visual explanation guided CAM was generated
 
 
 # HiResCAM
-The hiresolution class activation map(HiResCAM) was generated from gradient map and from guided CAM by performing element wise multiplication.
+The Hi-resolution class activation map(HiResCAM) was generated from gradient map and from guided_CAM by performing element wise multiplication.
 
 
 ![image](https://github.com/user-attachments/assets/3b544ec0-b732-4e82-8fe8-f51490ed2bc6)
